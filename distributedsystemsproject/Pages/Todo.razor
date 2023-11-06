@@ -1,0 +1,56 @@
+﻿@page "/todo/{Id}"
+@using distributedsystemsproject.Data;
+@inject NavigationManager navman
+
+<h3>Todo</h3>
+
+@if (Item == null) return;
+<a><b>Id: </b>@Id</a><br />
+<a><b>Title: </b>@Item.Title</a><br />
+<a><b>Description: </b>@Item.Description</a><br />
+<a><b>Created: </b>@Item.Created.ToString("G")</a><br />
+<a><b>Is done:</b>@Item.IsDone</a> <br/>
+@if(Item.Image.Length > 10)
+{
+    <img src="@Item.Image"/>
+}
+
+<br/>
+<button @onclick="IsDone">Is done</button>
+<button @onclick="Delete">Delete</button>
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    Data.TodoItem Item { get; set; }
+
+    protected async override void OnInitialized()
+    {
+        base.OnInitialized();
+        await GetItem();
+        this.StateHasChanged();
+    }
+
+    private async Task<int> GetItem()
+    {
+        ApiHandler handler = new();
+        Item = await handler.GetElement(Id);
+        return 0;
+    }
+
+    private async Task<bool> IsDone()
+    {
+        return false;
+    }
+
+    private async Task<bool> Delete()
+    {
+        ApiHandler handler = new();
+        bool success = await handler.DeleteElement(Item.Id);
+        if (!success) return false;
+        navman.NavigateTo("/");
+        return true;
+    }
+}

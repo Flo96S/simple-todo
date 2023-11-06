@@ -1,0 +1,28 @@
+﻿@using distributedsystemsproject.Data;
+
+<div class="top-banner">
+    <input placeholder="Title" @bind="Title"/> <br/>
+    <textarea placeholder="Description" @bind="Description"></textarea><br/>
+    <input placeholder="Color" @bind="Color"/> <br/>
+    <input placeholder="Image" @bind="Image"/> <br/>
+    <button @onclick="Create">Create</button>
+</div>
+
+@code {
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string Color { get; set; }
+    public string Image { get; set; }
+
+    public async void Create()
+    {
+        ApiHandler handler = new();
+        bool success = await handler.CreateElement(Title, Description, Color, Image);
+        if (!success) return;
+        Title = "";
+        Description = "";
+        Color = "";
+        Image = "";
+        this.StateHasChanged();
+    }
+}

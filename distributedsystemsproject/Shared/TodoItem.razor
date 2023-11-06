@@ -1,0 +1,19 @@
+﻿@inject NavigationManager navman
+
+@using distributedsystemsproject.Data;
+
+<div class="todo-item" @onclick="Redirect">
+    <div style="background: @Item.Color; height: 100%; width: 5px; position: relative; top: 0; left: 0; float: left; margin-right: 8px;"></div>
+    <a>@Item.Title</a><br/>
+    <a>@Item.Color</a>
+</div>
+
+@code {
+    [Parameter]
+    public Data.TodoItem Item { get; set; }
+
+    public void Redirect()
+    {
+        navman.NavigateTo("/todo/" + Item.Id);
+    }
+}
