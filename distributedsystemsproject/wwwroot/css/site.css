@@ -8,6 +8,19 @@ html, body {
     color: white;
 }
 
+.btn{
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #227878;
+    margin: auto 0;
+    margin-top: 16px;
+    width: 50%;
+}
+
+.btn:hover{
+    background-color: #229999;
+}
+
 input{
     background: #343a4d;
     border: none;

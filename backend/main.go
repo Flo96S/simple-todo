@@ -7,7 +7,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.opentelemetry.io/otel/trace"
 )
+
+var tracer trace.Tracer
+
+const meterName = ""
 
 func main() {
 	fmt.Println("Hello")
