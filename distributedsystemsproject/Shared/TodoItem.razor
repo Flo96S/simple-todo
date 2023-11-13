@@ -2,10 +2,16 @@
 
 @using distributedsystemsproject.Data;
 
-<div class="todo-item" @onclick="Redirect">
+<div class="todo-item" @onclick="Redirect" style="display: flex; cursor: pointer;">
     <div style="background: @Item.Color; height: 100%; width: 5px; position: relative; top: 0; left: 0; float: left; margin-right: 8px;"></div>
-    <a>@Item.Title</a><br/>
-    <a>@Item.Color</a>
+    <div style="flex-grow: 1;">
+        <a>@Item.Title</a><br />
+        <a>@Item.Created.ToString("d")</a>
+    </div>
+    @if(Item.IsDone)
+    {
+        <img src="check.png" style="height: 48px; position: relative; display: flex; top: 0px; float: none;" />
+    }
 </div>
 
 @code {

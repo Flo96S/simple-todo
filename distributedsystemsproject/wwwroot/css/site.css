@@ -50,6 +50,10 @@ textarea {
     margin-top: 8px;
 }
 
+    .todo-item:hover {
+        background: #313749;
+    }
+
 .footer {
     position: fixed;
     bottom: 0;

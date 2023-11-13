@@ -23,13 +23,7 @@
         base.OnInitialized();
         ApiHandler handler = new();
         list = await handler.GetElements();
-        UpdateSiteContent();
-    }
-
-
-    private async void UpdateSiteContent()
-    {
-        this.StateHasChanged();
+        StateHasChanged();
     }
 
     private void UpdateSite()

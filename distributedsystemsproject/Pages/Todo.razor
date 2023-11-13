@@ -2,35 +2,44 @@
 @using distributedsystemsproject.Data;
 @inject NavigationManager navman
 
+<a @onclick="GoBack" style="cursor: pointer;">Back</a>
 <h3>Todo</h3>
 
-@if (Item == null) return;
-<a><b>Id: </b>@Id</a><br />
-<a><b>Title: </b>@Item.Title</a><br />
-<a><b>Description: </b>@Item.Description</a><br />
-<a><b>Created: </b>@Item.Created.ToString("d")</a><br />
-<a><b>Is done:</b>@Item.IsDone</a> <br/>
-@if(Item.Image.Length > 10)
-{
-    <img src="@Item.Image"/>
-}
+<div style="width:100%; display:flex;align-content: center;">
+    <div style="width: 50%; background-color: #292e3d; padding: 16px; border-radius: 8px; margin: 0 auto;">
+        @if (Item == null) return;
+        <a><b>Id: </b>@Id</a><br />
+        <a><b>Title: </b>@Item.Title</a><br />
+        <a><b>Description: </b>@Item.Description</a><br />
+        <a><b>Created: </b>@Item.Created.ToString("d")</a><br />
+        <a><b>Is done:</b>@Item.IsDone</a> <br />
+        @if (Item.Image != null && Item.Image.Length > 10)
+        {
+            <div style="width: 100%; text-align: center;">
+                <img src="@Item.Image" style="max-width: 100%; max-width:50%; border-radius: 8px;"/>
+            </div>
+        }
 
-<br/>
-<button @onclick="IsDone">Is done</button>
-<button @onclick="Delete">Delete</button>
+        <br />
+        <div style="text-align:center;">
+            <button @onclick="IsDone" class="btn">Is done</button>
+            <button @onclick="Delete" class="btn">Delete</button>
+        </div>
+    </div>
+</div>
 
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public string Id { get; set; } = "";
 
-    Data.TodoItem Item { get; set; }
+    Data.TodoItem Item { get; set; } = new();
 
     protected async override void OnInitialized()
     {
         base.OnInitialized();
         await GetItem();
-        this.StateHasChanged();
+        StateHasChanged();
     }
 
     private async Task<int> GetItem()
@@ -40,9 +49,12 @@
         return 0;
     }
 
-    private async Task<bool> IsDone()
+    private async void IsDone()
     {
-        return false;
+        ApiHandler handler = new();
+        var x = await handler.UpdateElement(Item);
+        Item.IsDone = true;
+        StateHasChanged();
     }
 
     private async Task<bool> Delete()
@@ -52,5 +64,10 @@
         if (!success) return false;
         navman.NavigateTo("/");
         return true;
+    }
+
+    private async void GoBack()
+    {
+        navman.NavigateTo("/");
     }
 }

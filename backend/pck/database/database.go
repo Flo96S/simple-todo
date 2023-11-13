@@ -36,19 +36,29 @@ func GetItem(id string) types.TodoItem {
 	return item
 }
 
-func GetAllItemsShort() []types.TodoItemShort {
-	var items []types.TodoItemShort
-	cmd := "SELECT \"Id\", \"Title\", \"Color\" FROM \"Items\" ORDER BY \"IsDone\" ASC"
+func Update(id string, isDone bool) bool {
+	cmd := "UPDATE \"Items\" SET \"IsDone\"=$1 WHERE \"Id\"=$2"
+	_, err := Pool.Exec(context.Background(), cmd, isDone, id)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false
+	}
+	return true
+}
+
+func GetAllItemsShort() []types.TodoItem {
+	var fullitems []types.TodoItem
+	cmd := "SELECT * FROM \"Items\" ORDER BY \"IsDone\" ASC"
 	row, err := Pool.Query(context.Background(), cmd)
 	if err != nil {
-		return items
+		return fullitems
 	}
 	for row.Next() {
-		var item types.TodoItemShort
-		row.Scan(&item.Id, &item.Title, &item.Color)
-		items = append(items, item)
+		var item types.TodoItem
+		row.Scan(&item.Id, &item.Title, &item.Description, &item.Created, &item.IsDone, &item.Image, &item.Color)
+		fullitems = append(fullitems, item)
 	}
-	return items
+	return fullitems
 }
 
 func InsertItem(c *gin.Context) bool {

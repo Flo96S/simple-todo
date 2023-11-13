@@ -47,7 +47,13 @@ func main() {
 	})
 
 	r.PUT("/post", func(c *gin.Context) {
-
+		id := c.PostForm("id")
+		success := database.Update(id, true)
+		if success {
+			c.JSON(http.StatusOK, "")
+			return
+		}
+		c.JSON(http.StatusBadRequest, "")
 	})
 
 	r.DELETE("/post/:id", func(c *gin.Context) {

@@ -13,7 +13,8 @@ type TodoItem struct {
 }
 
 type TodoItemShort struct {
-	Id    string
-	Title string
-	Color string
+	Id     string
+	Title  string
+	Color  string
+	IsDone bool
 }

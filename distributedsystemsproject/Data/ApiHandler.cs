@@ -70,16 +70,23 @@ namespace distributedsystemsproject.Data
             }
         }
 
-        public void UpdateElement(TodoItem item)
+        public async Task<int> UpdateElement(TodoItem item)
         {
+            Dictionary<string, string> dic = new()
+            {
+                {"id", item.Id },
+            };
+            var content = new FormUrlEncodedContent(dic);
             try
             {
                 using (HttpClient client = new())
                 {
                     client.Timeout = new(0, 0, 10);
+                    var resp = await client.PutAsync(URL + "/post", content);
                 }
+                return 0;
             }
-            catch { return; }
+            catch { return 0; }
         }
 
         public async Task<bool> DeleteElement(string id)
