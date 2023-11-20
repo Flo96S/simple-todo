@@ -1,8 +1,8 @@
 package main
 
 import (
-	"dsystem/backend/pck/database"
-	"dsystem/backend/pck/helper"
+	"backend/pck/database"
+	"backend/pck/helper"
 	"fmt"
 	"net/http"
 
@@ -15,16 +15,28 @@ var tracer trace.Tracer
 const meterName = ""
 
 func main() {
-	fmt.Println("Hello")
+	// Set up OpenTelemetry.
+	/*
+		serviceName := "Todo"
+		serviceVersion := "0.1"
+		otelShutdown, err := otel.SetupOTelSDK(context.Background(), serviceName, serviceVersion)
+		if err != nil {
+			return
+		}
+		defer func() {
+			err = errors.Join(err, otelShutdown(context.Background()))
+		}()
+	*/
 	database.Init()
 	r := gin.Default()
+	//r.Use(gin.WrapH(otelhttp.NewHandler(http.DefaultServeMux, "/v1/trace")))
 
 	r.GET("/test", func(c *gin.Context) {
 		c.JSON(http.StatusOK, helper.GenerateRandomId(32))
 	})
 
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "Working")
+		c.JSON(http.StatusOK, "Working api - distributedsystems")
 	})
 
 	r.GET("/posts", func(c *gin.Context) {
@@ -39,6 +51,7 @@ func main() {
 
 	r.POST("/post", func(c *gin.Context) {
 		success := database.InsertItem(c)
+		fmt.Println("Success: ", success)
 		if success {
 			c.JSON(http.StatusOK, "Done")
 			return

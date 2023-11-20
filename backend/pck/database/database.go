@@ -1,9 +1,9 @@
 package database
 
 import (
+	"backend/pck/helper"
+	"backend/pck/types"
 	"context"
-	"dsystem/backend/pck/helper"
-	"dsystem/backend/pck/types"
 	"fmt"
 	"time"
 
@@ -14,7 +14,7 @@ import (
 var Pool *pgxpool.Pool
 
 func Init() {
-	dbUrl := "postgres://TodoManager:password@127.0.0.1:5432/TodoDB"
+	dbUrl := "postgres://root:9cAN5M6J4x9M5Ly7qC@127.0.0.1:5432/TodoDB"
 	newpool, err := pgxpool.New(context.Background(), dbUrl)
 	if err != nil {
 		fmt.Println("Error while creating db pool")
@@ -23,11 +23,22 @@ func Init() {
 	Pool = newpool
 }
 
+func Check() bool {
+	cmd := "SELECT 1"
+	_, err := Pool.Exec(context.Background(), cmd)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false
+	}
+	return true
+}
+
 func GetItem(id string) types.TodoItem {
 	var item types.TodoItem
 	cmd := "SELECT * FROM \"Items\" WHERE \"Id\"=$1"
 	row, err := Pool.Query(context.Background(), cmd, id)
 	if err != nil {
+		fmt.Println(err.Error())
 		return item
 	}
 	for row.Next() {
@@ -51,6 +62,7 @@ func GetAllItemsShort() []types.TodoItem {
 	cmd := "SELECT * FROM \"Items\" ORDER BY \"IsDone\" ASC"
 	row, err := Pool.Query(context.Background(), cmd)
 	if err != nil {
+		fmt.Println(err.Error())
 		return fullitems
 	}
 	for row.Next() {
