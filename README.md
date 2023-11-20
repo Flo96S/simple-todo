@@ -1,7 +1,74 @@
 # Distributedsystemsproject
 
+## Frontend
 Overview
 
+The frontend interacts with the backend API to perform various actions on a collection of TodoItem objects. These actions include testing the API, retrieving individual items, retrieving a list of items, updating an item, deleting an item, and creating a new item.
+ApiHandler Class
+Properties
+
+    URL: The base URL of the backend API. Default value is "http://localhost:9988".
+
+Methods
+Test
+
+csharp
+
+public async Task<string> Test()
+
+    Sends a GET request to the "/test" endpoint of the backend API.
+    Returns a string containing a randomly generated ID.
+
+GetElement
+
+csharp
+
+public async Task<TodoItem> GetElement(string id)
+
+    Sends a GET request to the "/post/:id" endpoint of the backend API, where id is the specified item ID.
+    Returns a TodoItem object representing the item with the given ID.
+
+GetElements
+
+csharp
+
+public async Task<List<TodoItem>> GetElements()
+
+    Sends a GET request to the "/posts" endpoint of the backend API.
+    Returns a list of TodoItem objects representing all items in the database.
+
+UpdateElement
+
+csharp
+
+public async Task<int> UpdateElement(TodoItem item)
+
+    Sends a PUT request to the "/post" endpoint of the backend API, updating the item with the specified ID.
+    Returns 0 upon successful update.
+
+DeleteElement
+
+csharp
+
+public async Task<bool> DeleteElement(string id)
+
+    Sends a DELETE request to the "/post/:id" endpoint of the backend API, where id is the specified item ID.
+    Returns true if the deletion is successful; otherwise, returns false.
+
+CreateElement
+
+csharp
+
+public async Task<bool> CreateElement(string title, string desc, string color, string img)
+
+    Sends a POST request to the "/post" endpoint of the backend API, creating a new item with the specified details.
+    Returns true if the creation is successful; otherwise, returns false.
+
+This ApiHandler class provides an interface for the frontend to interact with the backend API and perform CRUD operations on the TodoItem objects. Ensure that the backend server is running and accessible at the specified URL for successful communication.
+
+## Backend
+
+Overview
 The application provides a RESTful API for basic CRUD operations on a collection of items. It is structured as a Go program and is divided into several packages: database, helper, and otel. The database package handles interactions with the underlying data store, helper provides utility functions, and otel integrates OpenTelemetry for distributed tracing.
 Dependencies
 
