@@ -7,14 +7,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["distributedsystemsproject.csproj", "./"]
-RUN dotnet restore "distributedsystemsproject.csproj"
+COPY ["distributedsystemsproject/distributedsystemsproject.csproj", "distributedsystemsproject/"]
+RUN dotnet restore "./distributedsystemsproject/./distributedsystemsproject.csproj"
 COPY . .
 WORKDIR "/src/distributedsystemsproject"
-RUN dotnet build "distributedsystemsproject.csproj" -c Release -o /app/build
+RUN dotnet build "./distributedsystemsproject.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "distributedsystemsproject.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./distributedsystemsproject.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
