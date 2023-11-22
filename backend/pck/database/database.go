@@ -23,6 +23,15 @@ func Init() {
 	Pool = newpool
 }
 
+func ErrorCheck() string {
+	cmd := "SELECT 1"
+	_, err := Pool.Exec(context.Background(), cmd)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
 func Check() bool {
 	cmd := "SELECT 1"
 	_, err := Pool.Exec(context.Background(), cmd)

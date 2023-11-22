@@ -2,7 +2,6 @@ package main
 
 import (
 	"backend/pck/database"
-	"backend/pck/helper"
 	"fmt"
 	"net/http"
 
@@ -32,7 +31,10 @@ func main() {
 	//r.Use(gin.WrapH(otelhttp.NewHandler(http.DefaultServeMux, "/v1/trace")))
 
 	r.GET("/test", func(c *gin.Context) {
-		c.JSON(http.StatusOK, helper.GenerateRandomId(32))
+		c.JSON(http.StatusOK, gin.H{
+			"success:": database.Check(),
+			"error":    database.ErrorCheck(),
+		})
 	})
 
 	r.GET("/", func(c *gin.Context) {
