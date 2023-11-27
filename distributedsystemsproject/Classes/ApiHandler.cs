@@ -6,7 +6,7 @@ namespace distributedsystemsproject.Classes
 {
     public class ApiHandler
     {
-        public string URL = "http://localhost:9988";
+        public string URL = "http://backend:9988";
 
         public async Task<string> Test()
         {
