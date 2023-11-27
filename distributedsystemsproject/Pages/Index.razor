@@ -5,7 +5,7 @@
 @using distributedsystemsproject.Classes;
 
 <div>
-    <TopBannerCreateElement/>
+    <TopBannerCreateElement Update="UpdateView"/>
 
     <div class="bottom-banner">
         @foreach(Data.TodoItem item in list)
@@ -16,19 +16,18 @@
 </div>
 
 @code {
-    private string Content { get; set; }
     List<Data.TodoItem> list = new();
 
-    protected override async void OnInitialized()
+    protected override void OnInitialized()
     {
         base.OnInitialized();
+        UpdateView();
+    }
+
+    public async void UpdateView(int x = 0)
+    {
         ApiHandler handler = new();
         list = await handler.GetElements();
         StateHasChanged();
-    }
-
-    private void UpdateSite()
-    {
-        Navigation.NavigateTo("/todo/" + "hello");
     }
 }
