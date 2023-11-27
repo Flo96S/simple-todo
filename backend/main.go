@@ -2,16 +2,13 @@ package main
 
 import (
 	"backend/pck/database"
-	"fmt"
-	"net/http"
+	"backend/pck/endpoint"
 
 	"github.com/gin-gonic/gin"
 	"go.opentelemetry.io/otel/trace"
 )
 
 var tracer trace.Tracer
-
-const meterName = ""
 
 func main() {
 	// Set up OpenTelemetry.
@@ -30,55 +27,16 @@ func main() {
 	r := gin.Default()
 	//r.Use(gin.WrapH(otelhttp.NewHandler(http.DefaultServeMux, "/v1/trace")))
 
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"success:": database.Check(),
-			"error":    database.ErrorCheck(),
-		})
-	})
+	r.GET("/", endpoint.ApiRoot)
+	r.GET("/test", endpoint.Test)
+	r.GET("/posts", endpoint.GetTodos)
+	r.GET("/post/:id", endpoint.GetTodoById)
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "Working api - distributedsystems")
-	})
+	r.POST("/post", endpoint.AddItem)
 
-	r.GET("/posts", func(c *gin.Context) {
-		list := database.GetAllItemsShort()
-		c.JSON(http.StatusOK, list)
-	})
+	r.PUT("/post", endpoint.UpdateItem)
 
-	r.GET("/post/:id", func(c *gin.Context) {
-		item := database.GetItem(c.Param("id"))
-		c.JSON(http.StatusOK, item)
-	})
-
-	r.POST("/post", func(c *gin.Context) {
-		success := database.InsertItem(c)
-		fmt.Println("Success: ", success)
-		if success {
-			c.JSON(http.StatusOK, "Done")
-			return
-		}
-		c.JSON(http.StatusBadRequest, "Not successful")
-	})
-
-	r.PUT("/post", func(c *gin.Context) {
-		id := c.PostForm("id")
-		success := database.Update(id, true)
-		if success {
-			c.JSON(http.StatusOK, "")
-			return
-		}
-		c.JSON(http.StatusBadRequest, "")
-	})
-
-	r.DELETE("/post/:id", func(c *gin.Context) {
-		success := database.DeleteItem(c)
-		if success {
-			c.JSON(http.StatusOK, "Deleted")
-			return
-		}
-		c.JSON(http.StatusBadRequest, "Still exists")
-	})
+	r.DELETE("/post/:id", endpoint.DeleteItem)
 
 	r.Run(":9988")
 }
