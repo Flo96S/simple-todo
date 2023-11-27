@@ -4,7 +4,6 @@
 @inject NavigationManager navman
 
 <a @onclick="GoBack" style="cursor: pointer;">Back</a>
-<h3>Todo</h3>
 
 <div style="width:100%; display:flex;align-content: center;">
     <div style="width: 50%; background-color: #292e3d; padding: 16px; border-radius: 8px; margin: 0 auto;">
@@ -28,7 +27,7 @@
             <a><b>Created: </b>@Item.Created.ToString("d")</a>
 
             <br />
-            <a><b>Is done:</b>@Item.IsDone</a> <br />
+            <a><b>Is done: </b>@Item.IsDone</a> <br />
             @if (Item.Image != null && Item.Image.Length > 10)
             {
                 <div style="width: 100%; text-align: center;">
@@ -38,7 +37,10 @@
 
             <br />
             <div style="text-align:center;">
+                @if(!Item.IsDone)
+                {
                 <button @onclick="IsDone" class="btn" style="color: white;">Is done</button>
+                }
                 <button @onclick="Delete" class="btn" style="background-color: #783333; color: white;">Delete</button>
             </div>
         }
