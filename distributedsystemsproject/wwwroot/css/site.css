@@ -8,7 +8,7 @@ html, body {
     color: white;
 }
 
-.btn{
+.btn {
     padding: 8px;
     border-radius: 8px;
     background-color: #227878;
@@ -17,11 +17,11 @@ html, body {
     width: 50%;
 }
 
-.btn:hover{
-    background-color: #229999;
-}
+    .btn:hover {
+        background-color: #229999;
+    }
 
-input{
+input {
     background: #343a4d;
     border: none;
     color: white;
@@ -41,7 +41,7 @@ textarea {
     border-radius: 8px;
 }
 
-.todo-item{
+.todo-item {
     background: #343a4d;
     width: 100%;
     height: 75px;
@@ -60,8 +60,9 @@ textarea {
     left: 0;
 }
 
-.top-banner{
+.top-banner {
     width: 90%;
+    max-width: 60%;
     min-height: 125px;
     background: #283046;
     border-radius: 16px;
@@ -72,6 +73,7 @@ textarea {
 
 .bottom-banner {
     width: 90%;
+    max-width: 60%;
     min-height: 50px;
     background: #283046;
     border-radius: 16px;
@@ -94,7 +96,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {

@@ -3,10 +3,17 @@
 @using distributedsystemsproject.Classes;
 
 <div class="top-banner" style="box-shadow: 3px 3px 10px #141a2d">
-    <input placeholder="Title" @bind="Title"/> <br/>
-    <textarea placeholder="Description" @bind="Description"></textarea><br/>
-    <input placeholder="Color" @bind="Color"/> <br/>
-    <input placeholder="Image" @bind="Image"/> <br/>
+    <input placeholder="Title" @bind="Title" /> <br />
+    <textarea placeholder="Description" @bind="Description"></textarea><br />
+    <input placeholder="Color" @bind="Color" /> <br />
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" @bind="ShowImageInput">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Add Image Link</label>
+    </div>
+    @if (ShowImageInput)
+    {
+        <input placeholder="Image" @bind="Image" /> <br />
+    }
     <div style="width: 100%; display: flex; justify-content: center">
         <button @onclick="Create" style="color: white;" class="btn">Create</button>
     </div>
@@ -19,6 +26,7 @@
     public string Description { get; set; } = "";
     public string Color { get; set; } = "";
     public string Image { get; set; } = "";
+    private bool ShowImageInput { get; set; } = false;
 
     public async void Create()
     {
