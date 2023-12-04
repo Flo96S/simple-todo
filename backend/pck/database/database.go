@@ -6,16 +6,44 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 )
 
 var Pool *pgxpool.Pool
 
+// What kind of 12-factor aspects do you see in the following code snippet?
+// Are they good or not so good ones? :)
+
+// Factor 3 "External Configuration" - Violation: "The credentials and connection info are hard-coded"
+
+// Factor 4 "Backing Services" - Good! External Postgres is being attached as resource
+// Factor 6 "Processes" - Good! Application does not write state into memory, but uses external database
+// Factor 7 "Port Binding" - Good! Postgres is exposing services via a port and is connected that way"
+// Factor 11 "Logs" - Violation! There are no logs :)
+
+
+
 func Init() {
-	dbUrl := "postgres://psqlman:9cAN5M6J4x9M5Ly7qC@postgres:5432/TodoDB"
-	newpool, err := pgxpool.New(context.Background(), dbUrl)
+
+	if err := godotenv.Load(); err != nil {
+        fmt.Println("Error loading .env file:", err)
+        return
+    }
+
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbConnString := os.Getenv("DB_CONNECTION_STRING")
+
+	fmt.Println("Database Host:", dbHost)
+    fmt.Println("Database Port:", dbPort)
+	fmt.Println("Connection String:", dbConnString)
+
+	//dbUrl := "postgres://psqlman:9cAN5M6J4x9M5Ly7qC@postgres:5432/TodoDB"
+	newpool, err := pgxpool.New(context.Background(), dbConnString)
 	if err != nil {
 		fmt.Println("Error while creating db pool")
 		return

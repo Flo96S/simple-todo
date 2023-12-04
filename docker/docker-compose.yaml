@@ -12,6 +12,9 @@ services:
   backend:
     build:
       context: ../backend
+    environment:
+      - DB_HOST=backend
+      - DB_CONNECTION_STRING=postgres://psqlman:9cAN5M6J4x9M5Ly7qC@postgres:5432/TodoDB
     ports:
       - "9988:9988"
     networks:
